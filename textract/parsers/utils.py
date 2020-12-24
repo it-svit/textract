@@ -62,7 +62,12 @@ class BaseParser(object):
 
         # use chardet to automatically detect the encoding text
         result = chardet.detect(text)
-        return text.decode(result['encoding'])
+
+        if result['confidence'] > 0.80:
+            encoding = result['encoding']
+        else:
+            encoding = 'utf8'
+        return text.decode(encoding, 'ignore')
 
 
 class ShellParser(BaseParser):
